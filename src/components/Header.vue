@@ -5,12 +5,12 @@
         <div class="logo">
           <!-- 声明式导航 -->
           <router-link :to="{ name: 'Home' }">
-            <img src="../assets/logo.png" alt=""/>
+            <a class="title">羊驼电影</a>
           </router-link>
         </div>
         <ul class="nav">
           <li>
-            <router-link :to="{ name: 'Home' }">首页</router-link>
+            <router-link :to="{  name: 'Home' }">首页</router-link>
           </li>
           <li v-for="item in headerList" :key="item.channelId">
             <router-link :to="{name:'Home'}">{{ item.name }}</router-link>
@@ -44,7 +44,7 @@
         headerList: [
           {
             name: '我看',
-            url: '/',
+            url: '/subject',
           }
         ]
       }
@@ -57,10 +57,11 @@
     height: 60px;
   }
 
+
+
   .header-container {
     height: 60px;
-    background: #000;
-    color: #fff;
+    background-color: rgba(240,243,245, 0.88);
     line-height: 60px;
     position: fixed;
     z-index: 100;
@@ -78,11 +79,6 @@
     display: flex;
     align-items: center;
     height: 100%;
-  }
-
-  .logo img {
-    width: 42px;
-    height: 42px;
   }
 
   .nav {
@@ -109,6 +105,16 @@
   }
 
   .header a {
-    color: #fff;
+    color: #757575;
+  }
+  .router-link-active{
+    color: #258dcd !important;
+  }
+
+  .title {
+    color: #258dcd !important;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 75px;
   }
 </style>

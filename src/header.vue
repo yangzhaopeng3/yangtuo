@@ -8,18 +8,17 @@
             <el-button slot="append" icon="el-icon-search" @click="searchMovie"></el-button>
           </el-input>
         </div>
-        <a>111/a>
+        <a>111</a>
       </div>
-    </div>
-    <div class="douban-bar">
-      <ul>
-        <li v-for="bar in barList">
-          <el-link :underline="false" :href="bar.url" class='bg-hover'>{{bar.title}}</el-link>
-        </li>
-      </ul>
-    </div>
+      <div class="douban-bar">
+        <ul>
+          <li v-for="bar in barList">
+            <el-link :underline="false" :href="bar.url" class='bg-hover'>{{bar.title}}</el-link>
+          </li>
+        </ul>
+      </div>
 
-  </div>
+    </div>
 </template>
 
 <script>
@@ -48,7 +47,7 @@
   @import "../style/color";
 
   .user {
-  margin-right: 10px;
+    margin-right: 10px;
   }
 
   .douban-header {
@@ -88,7 +87,7 @@
         position: relative;
 
         .title {
-          color: @doubanColor;
+          color: #258dcd;
           font-size: 30px;
           font-weight: bold;
           line-height: 75px;
