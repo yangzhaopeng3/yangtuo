@@ -11,6 +11,11 @@ export default {
       component: () => import("../views/MovieDetail")
     },
     {
+      path: "/search/:content",
+      name: "Search",
+      component: () => import("../views/SearchPage")
+    },
+    {
       path: '/passport',
       name: "Passport",
       component: () => import("../views/Passport"),

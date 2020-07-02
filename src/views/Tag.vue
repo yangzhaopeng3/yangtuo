@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-radio-group @change="change" v-model="type">
-      <span v-for="(item,index) in types">
+      <span v-for="(item,index) in types" :key="index">
         <div v-if="index==13" style="margin-top: 20px">
         </div>
-        <el-radio-button  style="margin-right: 10px" :label="item">
+        <el-radio-button style="margin-right: 10px" :label="item">
           {{item}}
         </el-radio-button>
       </span>
@@ -12,24 +12,49 @@
 
     <br> <br>
     <el-radio-group @change="change" v-model="region">
-      <el-radio-button style="margin-right: 10px" v-for="item in regions" :label="item">{{item}}</el-radio-button>
+      <el-radio-button style="margin-right: 10px" :key="index" v-for="(item,index) in regions" :label="item">{{item}}
+      </el-radio-button>
     </el-radio-group>
     <br> <br>
     <el-radio-group @change="change" v-model="year">
-      <el-radio-button style="margin-right: 10px" v-for="item in years" :label="item">{{item}}</el-radio-button>
+      <el-radio-button style="margin-right: 10px" :key="index" v-for="(item,index) in years" :label="item">{{item}}
+      </el-radio-button>
     </el-radio-group>
     <br> <br>
-    <el-radio-group  @change="change" v-model="special">
-      <el-radio-button style="margin-right: 10px" v-for="item in specials" :label="item">{{item}}</el-radio-button>
+    <el-radio-group @change="change" v-model="special">
+      <el-radio-button style="margin-right: 10px" :key="index" v-for="(item,index) in specials" :label="item">{{item}}
+      </el-radio-button>
     </el-radio-group>
+    <div>
+      <MovieListVertical :charts="movieList">
+      </MovieListVertical>
+    </div>
+    <el-pagination
+      style="margin-top: 20px;text-align: center"
+      :hide-on-single-page="true"
+      :page-size="12"
+      :current-page="currentPage"
+      layout="prev, pager, next"
+      @current-change="pageChange"
+      :total="total">
+    </el-pagination>
   </div>
 </template>
 
 <script>
+  import MovieListVertical from "../components/MovieListVertical";
+  import {getByTag, getMovieList} from "../services/movieService";
+
   export default {
     name: "Tag",
+    components: {
+      MovieListVertical
+    },
     data() {
       return {
+        currentPage: 1,
+        total: 0,
+        movieList: [],
         type: '全部类型',
         region: '全部地区',
         year: '全部年份',
@@ -42,10 +67,38 @@
         specials: ['全部特色', '经典', '青春', '文艺', '搞笑', '励志', '魔幻', '感人']
       }
     },
+    async created() {
+      this.currentPage = 1;
+      var movieList = await getByTag(null,1, 12);
+      this.movieList = movieList.data.list;
+      this.total = movieList.data.total;
+    },
     methods: {
-      change(val) {
-        console.log(val);
-      }
+      async change(val) {
+        console.log(this.type + this.region + this.year + this.special);
+        var tag = {
+          type: this.type == '全部类型' ? '' : this.type,
+          region: this.region == '全部地区' ? '' : this.region,
+          year: this.year == '全部年份' ? '' : this.year,
+          special: this.special == '全部特色' ? '' : this.special,
+        }
+        var movieOfTag = await getByTag(tag, 1, 12);
+        this.currentPage = 1;
+        if (movieOfTag.code == 0) {
+          this.movieList = movieOfTag.data.list;
+          this.total = movieOfTag.data.total;
+        } else {
+          this.total = 0;
+          this.movieList = null;
+          this.currentPage = 1;
+        }
+      },
+      async pageChange(val) {
+        this.currentPage = val;
+        var movieList = await getByTag(this.tagParam, val, 12);
+        this.movieList = movieList.list;
+        this.total = movieList.total;
+      },
     }
   }
 </script>

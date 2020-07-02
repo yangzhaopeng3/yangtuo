@@ -10,6 +10,31 @@ export async function getMovieList(start = 1, limit = 12) {
   return resp.data.data;
 }
 
+export async function search(content, start = 1, limit = 12) {
+  var resp = await axios.get(`/api/movies/search/${content}`, {
+    params: {
+      start: start,
+      limit: limit
+    }
+  });
+  console.log(resp);
+  return resp.data;
+}
+
+
+export async function getByTag(tag, start = 1, limit = 12) {
+  var resp = await axios.get("/api/movies/tag", {
+    params: {
+      ...tag,
+      start: start,
+      limit: limit
+    }
+  });
+  console.log(resp);
+  return resp.data;
+}
+
+
 export async function getChart(start = 1, limit = 12) {
   var resp = await axios.get("/api/movies/chart", {
     params: {

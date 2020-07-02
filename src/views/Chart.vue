@@ -1,31 +1,6 @@
 <template>
   <div style="margin-top: -20px">
-    <el-row style="margin-top: 50px" v-for="movie in charts" type="flex" class="row-bg">
-      <el-col :span="6">
-        <img
-          :src="movie.poster"
-          style="margin-top: 5px;width: 130px; height: 180px"></img>
-      </el-col>
-      <el-col :span="18">
-        <div style="margin-top: 20px;margin-left: -50px;">
-          <div>
-            <div>
-              <div>{{movie.movieTitle}}/{{movie.titleOther}}</div>
-              <div style="margin-top: 10px">
-                {{movie.releaseDate}} / {{movie.cast}} / {{movie.genre}} / {{movie.country}}
-                / {{movie.language}} / {{movie.duration}}分钟 / {{movie.tag}}...
-              </div>
-            </div>
-          </div>
-          <div>
-            <el-rate :max="5" :show-score="true" disabled :value="movie.rating/2"
-                     style="margin-top: 15px;margin-left: 0px" text-color="#ff9900">
-            </el-rate>
-
-          </div>
-        </div>
-      </el-col>
-    </el-row>
+    <MovieListVertical :charts="charts"></MovieListVertical>
     <el-pagination
       style="margin-top: 20px;text-align: center"
       :page-size="10"
@@ -39,9 +14,13 @@
 
 <script>
   import {getChart} from "../services/movieService";
+  import MovieListVertical from "../components/MovieListVertical";
 
   export default {
     name: "Top",
+    components: {
+      MovieListVertical
+    },
     data() {
       return {
         charts: [],

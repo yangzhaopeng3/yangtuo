@@ -8,7 +8,7 @@
           <el-tabs value="first" :stretch="true" style="height: 100%" type="border-card">
             <el-tab-pane label="登录" name="first">
               <div style="margin-top: 50px;" class="login_zone">
-                <el-form :model="loginForm" :rules="rule_login" ref="loginForm" size="large" status-icon>
+                <el-form  @keyup.enter.native="submitFormLogin('loginForm')" :model="loginForm" :rules="rule_login" ref="loginForm" size="large" status-icon>
                   <el-form-item class="input_area" prop="username">
                     <el-input autocomplete="off" placeholder="用户名" v-model="loginForm.username"></el-input>
                   </el-form-item>
@@ -33,7 +33,7 @@
             </el-tab-pane>
             <el-tab-pane label="注册" name="second">
               <div class="register_zone" style="margin-top: 10px">
-                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" size="large" status-icon>
+                <el-form @keyup.enter.native="submitForm('ruleForm')" :model="ruleForm" :rules="rules" ref="ruleForm" size="large" status-icon>
                   <el-form-item class="input_area" prop="username">
                     <el-input autocomplete="off" placeholder="用户名" v-model="ruleForm.username"></el-input>
                   </el-form-item>

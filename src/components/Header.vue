@@ -19,6 +19,11 @@
             <router-link :to="{name:item.url}">{{ item.name }}</router-link>
           </li>
         </ul>
+        <div>
+          <el-input @keyup.enter.native="searchSTH" style="width: 400px;margin-right: 50px" placeholder="电影、影人、电视剧" v-model="content">
+            <el-button style="width: 60px" @click="searchSTH" icon="el-icon-search" slot="append"></el-button>
+          </el-input>
+        </div>
         <div class="user">
           <!-- 情况2：当前有登录用户 -->
           <template v-if="loginUser">
@@ -51,6 +56,7 @@
   export default {
     data() {
       return {
+        content: '',
         headerList: [
           {
             name: '分类',
@@ -69,6 +75,17 @@
       }),
     },
     methods: {
+      searchSTH() {
+        if (this.content == '') {
+          return;
+        }
+        this.$router.push({
+          name: "Search",
+          params: {
+            content: this.content,
+          }
+        })
+      },
       handleLoginOut() {
         this.$store.dispatch("loginUser/loginOut");
         this.$router.push({name: "Passport"});
@@ -138,7 +155,7 @@
   }
 
   .user {
-    float:right;
+    float: right;
     font-size: 14px;
     margin-right: 30px;
   }
