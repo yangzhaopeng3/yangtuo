@@ -13,7 +13,7 @@
             <router-link :to="{  name: 'Mine' }">我看</router-link>
           </li>
           <li>
-            <router-link :to="{  name: 'Home' }">正在热映</router-link>
+            <router-link exact :to="{  name: 'Home' }">正在热映</router-link>
           </li>
           <li :key="item.channelId" v-for="item in headerList">
             <router-link :to="{name:item.url}">{{ item.name }}</router-link>
@@ -54,11 +54,11 @@
         headerList: [
           {
             name: '分类',
-            url: '/tag'
+            url: 'Tag'
           },
           {
             name: '排行榜',
-            url: '/chart'
+            url: 'Chart'
           },
         ]
       }

@@ -1,7 +1,5 @@
 import axios from "axios";
 
-var token = localStorage.getItem("token");
-
 export async function getComments(movieId, start = 1, limit = 10) {
   var resp = await axios.get(`/api/rate/${movieId}`, {
     params: {
@@ -9,24 +7,17 @@ export async function getComments(movieId, start = 1, limit = 10) {
       limit: limit
     }
   });
-  console.log("resp.data.data -- comments");
-  console.log(resp)
   return resp.data.data;
 }
 
 
 export async function getUserAComment(movieId, userId) {
-  console.log(`/api/rate/${movieId}/my/${userId}`);
   var resp = await axios.get(`/api/rate/${movieId}/my/${userId}`);
-  console.log(resp.data);
   return resp.data;
 }
 
 export async function makeRate(rate) {
-  console.log("service make rate " + rate);
-  if (token == null) {
-    return null;
-  }
+  var token = localStorage.getItem("token");
   var resp = await axios.post('/api/rate', rate, {
     headers: {
       token: token
@@ -36,6 +27,7 @@ export async function makeRate(rate) {
 }
 
 export async function deleteRate(cid) {
+  var token = localStorage.getItem("token");
   var resp = await axios.delete(`/api/rate/${cid}`, {
     headers: {
       token: token
@@ -45,6 +37,7 @@ export async function deleteRate(cid) {
 }
 
 export async function updateRate(rate) {
+  var token = localStorage.getItem("token");
   var resp = await axios.put('/api/rate', rate, {
     headers: {
       token: token
