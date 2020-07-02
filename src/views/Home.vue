@@ -21,7 +21,6 @@
     async created() {
       var movieList = await getMovieList();
       this.movieList = movieList.list;
-      console.log(this.movieList);
     }
   }
 </script>

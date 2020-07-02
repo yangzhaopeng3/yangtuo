@@ -1,15 +1,15 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col style="margin-top: 20px" :span="isSmall?4:6" v-for="item in movieList" :key="item.movieId">
-        <el-card shadow="hover" :body-style="{ padding: '0px' }">
-          <meta name="referrer" content="no-referrer"/>
-          <img style="cursor:pointer" @click="switchTo(item.movieId)" :class="isSmall==true?'image_small':'image'"
-               :src="item.poster">
+      <el-col :key="item.movieId" :span="isSmall?4:6" style="margin-top: 20px" v-for="item in movieList">
+        <el-card :body-style="{ padding: '0px' }" shadow="hover">
+          <meta content="no-referrer" name="referrer"/>
+          <img :class="isSmall==true?'image_small':'image'" :src="item.poster" @click="switchTo(item.movieId)"
+               style="cursor:pointer">
           <div style="text-align: center;height: 60px">
-            <span style="cursor:pointer" @click="switchTo(item.movieId)" :class="isSmall?'title_small':'title'">{{item.movieTitle}}</span>
-            <el-rate style="margin-top: 10px;margin-left: 10px" :disabled="true" :max="5" :value="item.rating/2"
-                     :show-score="true" text-color="#ff9900">
+            <span :class="isSmall?'title_small':'title'" @click="switchTo(item.movieId)" style="cursor:pointer">{{item.movieTitle}}</span>
+            <el-rate :disabled="true" :max="5" :show-score="true" :value="item.rating/2"
+                     style="margin-top: 10px;margin-left: 10px" text-color="#ff9900">
             </el-rate>
           </div>
         </el-card>

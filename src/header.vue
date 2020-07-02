@@ -5,7 +5,7 @@
         <a class="title">羊驼网</a>
         <div class="search-container">
           <el-input placeholder="电影、影人、电视剧" v-model="content">
-            <el-button slot="append" icon="el-icon-search" @click="searchMovie"></el-button>
+            <el-button @click="searchMovie" icon="el-icon-search" slot="append"></el-button>
           </el-input>
         </div>
         <a>111</a>
@@ -13,7 +13,7 @@
       <div class="douban-bar">
         <ul>
           <li v-for="bar in barList">
-            <el-link :underline="false" :href="bar.url" class='bg-hover'>{{bar.title}}</el-link>
+            <el-link :href="bar.url" :underline="false" class='bg-hover'>{{bar.title}}</el-link>
           </li>
         </ul>
       </div>

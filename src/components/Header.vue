@@ -9,28 +9,36 @@
           </router-link>
         </div>
         <ul class="nav">
-          <li>
-            <router-link :to="{  name: 'Home' }">首页</router-link>
+          <li v-if="loginUser">
+            <router-link :to="{  name: 'Mine' }">我看</router-link>
           </li>
-          <li v-for="item in headerList" :key="item.channelId">
-            <router-link :to="{name:'Home'}">{{ item.name }}</router-link>
+          <li>
+            <router-link :to="{  name: 'Home' }">正在热映</router-link>
+          </li>
+          <li :key="item.channelId" v-for="item in headerList">
+            <router-link :to="{name:item.url}">{{ item.name }}</router-link>
           </li>
         </ul>
         <div class="user">
-          <!--          &lt;!&ndash; 情况1：正在远程加载中 &ndash;&gt;-->
-          <!--          <span v-if="isLogining">loading...</span>-->
-          <!--          &lt;!&ndash; 情况2：当前有登录用户 &ndash;&gt;-->
-          <!--          <template v-else-if="loginUser">-->
-          <!--            <router-link :to="{ name: 'Personal' }">{{-->
-          <!--              loginUser.nickname-->
-          <!--              }}-->
-          <!--            </router-link>-->
-          <!--            <a href="">退出登录</a>-->
-          <!--          </template>-->
-          <!--          <template v-else>-->
-          <!--            <router-link :to="{ name: 'Home' }">登录</router-link>-->
-          <!--            <router-link :to="{ name: 'Home' }">注册</router-link>-->
-          <!--          </template>-->
+          <!-- 情况2：当前有登录用户 -->
+          <template v-if="loginUser">
+            <el-dropdown trigger="click">
+      <span class="el-dropdown-link">
+        {{loginUser.nickname}}的账号<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>
+                  <router-link :to="{name:'Mine'}">个人主页</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <a href="" @click.prevent="handleLoginOut">退出</a>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
+          <template v-else>
+            <router-link :to="{ name: 'Passport' }">登录 / 注册</router-link>
+          </template>
         </div>
       </div>
     </div>
@@ -38,17 +46,34 @@
 </template>
 
 <script>
+  import {mapState} from "vuex";
+
   export default {
     data() {
       return {
         headerList: [
           {
-            name: '我看',
-            url: '/subject',
-          }
+            name: '分类',
+            url: '/tag'
+          },
+          {
+            name: '排行榜',
+            url: '/chart'
+          },
         ]
       }
-    }
+    },
+    computed: {
+      ...mapState("loginUser", {
+        loginUser: "data",
+      }),
+    },
+    methods: {
+      handleLoginOut() {
+        this.$store.dispatch("loginUser/loginOut");
+        this.$router.push({name: "Passport"});
+      },
+    },
   };
 </script>
 
@@ -57,11 +82,25 @@
     height: 60px;
   }
 
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
 
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+
+  .demonstration {
+    display: block;
+    color: #8492a6;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
 
   .header-container {
     height: 60px;
-    background-color: rgba(240,243,245, 0.88);
+    background-color: rgba(240, 243, 245, 0.88);
     line-height: 60px;
     position: fixed;
     z-index: 100;
@@ -72,11 +111,13 @@
   }
 
   .container {
+    width: 100%;
     display: flex;
   }
 
   .logo a {
     display: flex;
+    margin-left: 110px;
     align-items: center;
     height: 100%;
   }
@@ -97,7 +138,9 @@
   }
 
   .user {
+    float:right;
     font-size: 14px;
+    margin-right: 30px;
   }
 
   .user * {
@@ -107,7 +150,8 @@
   .header a {
     color: #757575;
   }
-  .router-link-active{
+
+  .router-link-active {
     color: #258dcd !important;
   }
 

@@ -1,12 +1,15 @@
 @import "//at.alicdn.com/t/font_1811699_2hvkwp7upcz.css";
 
+
 a {
   color: #409eff;
   text-decoration: none;
 }
-a:hover{
+
+a:hover {
   color: #66b1ff;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -30,6 +33,7 @@ input {
   padding: 0 15px;
   transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
+
 input:focus {
   outline: none;
   border-color: #409eff;
@@ -58,6 +62,7 @@ button {
   border-radius: 4px;
   padding: 12px;
 }
+
 button:hover {
   background: #66b1ff;
   border-color: #66b1ff;

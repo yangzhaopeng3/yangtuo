@@ -9,6 +9,8 @@ import "./assets/style/global.css";
 import store from "./store";
 import router from './router'
 
+store.dispatch("loginUser/whoAmI")
+
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 
