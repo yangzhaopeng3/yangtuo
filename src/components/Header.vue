@@ -20,7 +20,8 @@
           </li>
         </ul>
         <div>
-          <el-input @keyup.enter.native="searchSTH" style="width: 400px;margin-right: 50px" placeholder="电影、影人、电视剧" v-model="content">
+          <el-input @keyup.enter.native="searchSTH" placeholder="电影、影人、电视剧" style="width: 400px;margin-right: 50px"
+                    v-model="content">
             <el-button style="width: 60px" @click="searchSTH" icon="el-icon-search" slot="append"></el-button>
           </el-input>
         </div>
@@ -85,6 +86,7 @@
             content: this.content,
           }
         })
+        this.content = ''
       },
       handleLoginOut() {
         this.$store.dispatch("loginUser/loginOut");

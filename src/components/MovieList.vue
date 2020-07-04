@@ -67,7 +67,7 @@
 
   .image_small {
     width: 100%;
-    height: 200px;
+    height: 220px;
     display: block;
   }
 

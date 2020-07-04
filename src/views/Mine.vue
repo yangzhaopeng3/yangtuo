@@ -6,6 +6,11 @@
         <h2>看过&nbsp;·&nbsp;·&nbsp;·
           <span class="pl">&nbsp;(<span>{{watch.total}}部</span>)</span>
         </h2>
+        <div v-if="watch.total==0">
+          你还没有看过任何电影，快去
+          <router-link :to="{name:'Tag'}">标记</router-link>
+          吧！
+        </div>
         <MovieList :is-small="true" :movie-list="watch.watchedList">
         </MovieList>
         <el-pagination style="text-align: center;margin-top: 15px"
@@ -21,12 +26,17 @@
         <h2>想看&nbsp;·&nbsp;·&nbsp;·
           <span class="pl">&nbsp;(<span>{{wish.total}}部</span>)</span>
         </h2>
-        <el-pagination
-          :hide-on-single-page="true"
-          small
-          layout="prev,next"
-          :total="wish.total">
-        </el-pagination>
+        <!--        <el-pagination-->
+        <!--          :hide-on-single-page="true"-->
+        <!--          small-->
+        <!--          layout="prev,next"-->
+        <!--          :total="wish.total">-->
+        <!--        </el-pagination>-->
+        <div v-if="wish.total==0">
+          你还没有标记任何电影，快去
+          <router-link :to="{name:'Tag'}">标记</router-link>
+          吧！
+        </div>
         <MovieList :is-small="true" :movie-list="wish.wishList"></MovieList>
         <el-pagination style="text-align: center;margin-top: 15px"
                        :current-page="wish.currentPage"
@@ -39,8 +49,14 @@
 
       <div style="margin-top: 30px">
         <h2>为你推荐&nbsp;·&nbsp;·&nbsp;·
-          <span class="pl">&nbsp;(<span>384部</span>)</span>
+          <span class="pl">&nbsp;(<span>{{recTotal}}部</span>)</span>
         </h2>
+        <div v-if="recTotal==0&&loading==false">
+          你标记的电影数量太少，我们还猜不透你呢！<br>快去
+          <router-link :to="{name:'Chart'}">标记更多的电影</router-link>
+          ，让我们知道你的口味吧！
+        </div>
+        <MovieList :is-small="true" :movie-list="recommendList" v-loading="loading"></MovieList>
       </div>
     </div>
 
@@ -51,7 +67,7 @@
 <script>
   import {mapState} from "vuex"
   import MovieList from "../components/MovieList";
-  import {getWatchedList, getWishList} from "../services/movieService";
+  import {getRecommends, getWatchedList, getWishList} from "../services/movieService";
 
   export default {
     name: "Mine",
@@ -63,6 +79,7 @@
     },
     data() {
       return {
+        loading: true,
         watch: {
           total: 0,
           currentPage: 1,
@@ -73,18 +90,29 @@
           currentPage: 1,
           wishList: [],
         },
+        recTotal: 0,
         recommendList: [],
       }
     },
     async created() {
       var resp1 = await getWatchedList(this.loginUser.userId);
-      console.log(resp1);
-      this.watch.watchedList = resp1.list;
-      this.watch.total = resp1.total;
-
+      if (resp1.code == 0) {
+        this.watch.watchedList = resp1.data.list;
+        this.watch.total = resp1.data.total;
+      }
       var resp2 = await getWishList(this.loginUser.userId);
-      this.wish.wishList = resp2.list;
-      this.wish.total = resp2.total;
+      if (resp2.code == 0) {
+        this.wish.wishList = resp2.data.list;
+        this.wish.total = resp2.data.total;
+      }
+      this.loading = true;
+      var resp3 = await getRecommends(this.loginUser.userId);
+      if (resp3.code == 0) {
+        console.log(resp3);
+        this.recTotal = resp3.data.length;
+        this.recommendList = resp3.data;
+      }
+      this.loading = false;
     },
     methods: {
       async pageChange_watch(val) {

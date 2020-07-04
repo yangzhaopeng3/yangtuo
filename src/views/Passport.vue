@@ -8,7 +8,8 @@
           <el-tabs value="first" :stretch="true" style="height: 100%" type="border-card">
             <el-tab-pane label="登录" name="first">
               <div style="margin-top: 50px;" class="login_zone">
-                <el-form  @keyup.enter.native="submitFormLogin('loginForm')" :model="loginForm" :rules="rule_login" ref="loginForm" size="large" status-icon>
+                <el-form :model="loginForm" :rules="rule_login" @keyup.enter.native="submitFormLogin('loginForm')"
+                         ref="loginForm" size="large" status-icon v-loading="loading_login">
                   <el-form-item class="input_area" prop="username">
                     <el-input autocomplete="off" placeholder="用户名" v-model="loginForm.username"></el-input>
                   </el-form-item>
@@ -33,7 +34,10 @@
             </el-tab-pane>
             <el-tab-pane label="注册" name="second">
               <div class="register_zone" style="margin-top: 10px">
-                <el-form @keyup.enter.native="submitForm('ruleForm')" :model="ruleForm" :rules="rules" ref="ruleForm" size="large" status-icon>
+                <el-form :model="ruleForm"
+                         :rules="rules" @keyup.enter.native="submitForm('ruleForm')"
+                         ref="ruleForm" size="large"
+                         status-icon v-loading="loading_reg">
                   <el-form-item class="input_area" prop="username">
                     <el-input autocomplete="off" placeholder="用户名" v-model="ruleForm.username"></el-input>
                   </el-form-item>
@@ -65,12 +69,11 @@
         </div>
       </div>
       <video :style="fixStyle" autoplay class="fillWidth" loop muted>
-        <source src="../assets/rs_web_open2019.mp4" type="video/mp4">
+        <source src="../assets/passport.mp4" type="video/mp4">
       </video>
     </div>
   </div>
 </template>
-
 <script>
   import Header from "../components/Header";
   import {reg} from "../services/userService";
@@ -138,6 +141,8 @@
         }
       };
       return {
+        loading_login: false,
+        loading_reg: false,
         fixStyle: '',
         regMessage: {
           visible: false,
@@ -217,14 +222,19 @@
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
             let userInfo = this.ruleForm;
+            this.loading_reg = true;
             var resp = await reg(userInfo);
             if (resp.code == 0) {
+              await this.sleep(1000);
+              this.loading_reg = false;
               this.regMessage.type = 'success';
             } else {
               this.regMessage.type = "error";
             }
+            this.regMessage.visible = true;
             this.regMessage.msg = resp.msg;
           } else {
+            this.regMessage.visible = true;
             this.regMessage.type = "warning";
             this.message.msg = "请检查输入信息！"
             return false;
@@ -235,16 +245,19 @@
       async submitFormLogin(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
+            this.loading_login = true;
             var result = await this.$store.dispatch(
               "loginUser/login",
               this.loginForm
             );
             if (result.code == 0) {
+              await this.sleep(1000);
+              this.loading_login = false;
+              this.loginMessage.visible = true;
               this.loginMessage.type = 'success';
               this.loginMessage.msg = result.msg;
-              setTimeout(() => {
-                this.$router.push({name: "Home"})
-              }, 3000);
+              await this.sleep(1000);
+              this.$router.push({name: "Home"});
             } else {
               this.loginMessage.type = "error";
               this.loginMessage.msg = result.msg;
@@ -257,9 +270,17 @@
           this.loginMessage.visible = true;
         });
       },
+      sleep(millisecond) {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve()
+          }, millisecond)
+        });
+      }
     },
   }
 </script>
+
 <style scoped>
   .input_area {
     margin-left: 45px;

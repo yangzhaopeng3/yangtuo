@@ -1,4 +1,6 @@
 import axios from "axios";
+import {sleep} from "./movieService";
+
 
 export async function getComments(movieId, start = 1, limit = 10) {
   var resp = await axios.get(`/api/rate/${movieId}`, {
@@ -7,7 +9,8 @@ export async function getComments(movieId, start = 1, limit = 10) {
       limit: limit
     }
   });
-  return resp.data.data;
+  sleep(500);
+  return resp.data;
 }
 
 

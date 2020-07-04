@@ -1,5 +1,25 @@
 import axios from "axios"
 
+export function sleep(duration) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, duration)
+  });
+}
+
+export async function getRecommends(userId) {
+  console.log("getRecoomend")
+  var token = localStorage.getItem("token")
+  var resp = await axios.get(`/api/suggest/${userId}`, {
+    headers: {
+      token: token
+    }
+  });
+  console.log(resp);
+  return resp.data;
+}
+
 export async function getMovieList(start = 1, limit = 12) {
   var resp = await axios.get("/api/movies", {
     params: {
@@ -17,7 +37,7 @@ export async function search(content, start = 1, limit = 12) {
       limit: limit
     }
   });
-  console.log(resp);
+  await sleep(500);
   return resp.data;
 }
 
@@ -30,7 +50,7 @@ export async function getByTag(tag, start = 1, limit = 12) {
       limit: limit
     }
   });
-  console.log(resp);
+  await sleep(500);
   return resp.data;
 }
 
@@ -42,7 +62,8 @@ export async function getChart(start = 1, limit = 12) {
       limit: limit
     }
   });
-  return resp.data.data;
+  await sleep(500);
+  return resp.data;
 }
 
 
@@ -57,7 +78,7 @@ export async function getWishList(userId, start = 1, limit = 12) {
       token: token
     }
   });
-  return resp.data.data;
+  return resp.data;
 }
 
 export async function getWatchedList(userId, start = 1, limit = 12) {
@@ -71,12 +92,17 @@ export async function getWatchedList(userId, start = 1, limit = 12) {
       token: token
     }
   });
-  return resp.data.data;
+  return resp.data;
 }
 
 
 export async function getMovie(movieId) {
   var resp = await axios.get(`/api/movie/${movieId}`);
-  console.log(resp)
+  await sleep(500);
   return resp.data.data;
+}
+
+export async function getMovieRecommend(movieId) {
+  var resp = await axios.get(`/api/movie/rec/${movieId}`);
+  return resp.data;
 }

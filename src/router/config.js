@@ -41,7 +41,10 @@ export default {
     {
       path: "*",
       name: "404",
-      component: () => import("../views/NotFound")
+      component: () => import("../views/NotFound"),
+      meta: {
+        keepAlive: false
+      }
     }
   ],
   mode: "history"

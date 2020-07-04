@@ -25,7 +25,7 @@
       <el-radio-button style="margin-right: 10px" :key="index" v-for="(item,index) in specials" :label="item">{{item}}
       </el-radio-button>
     </el-radio-group>
-    <div>
+    <div v-loading="loading">
       <MovieListVertical :charts="movieList">
       </MovieListVertical>
     </div>
@@ -43,7 +43,7 @@
 
 <script>
   import MovieListVertical from "../components/MovieListVertical";
-  import {getByTag, getMovieList} from "../services/movieService";
+  import {getByTag} from "../services/movieService";
 
   export default {
     name: "Tag",
@@ -52,6 +52,7 @@
     },
     data() {
       return {
+        laading: false,
         currentPage: 1,
         total: 0,
         movieList: [],
@@ -68,21 +69,24 @@
       }
     },
     async created() {
+      this.loading = true;
       this.currentPage = 1;
-      var movieList = await getByTag(null,1, 12);
+      var movieList = await getByTag(null, 1, 12);
+      this.loading = false;
       this.movieList = movieList.data.list;
       this.total = movieList.data.total;
     },
     methods: {
       async change(val) {
-        console.log(this.type + this.region + this.year + this.special);
         var tag = {
           type: this.type == '全部类型' ? '' : this.type,
           region: this.region == '全部地区' ? '' : this.region,
           year: this.year == '全部年份' ? '' : this.year,
           special: this.special == '全部特色' ? '' : this.special,
         }
+        this.loading = true;
         var movieOfTag = await getByTag(tag, 1, 12);
+        this.loading = false;
         this.currentPage = 1;
         if (movieOfTag.code == 0) {
           this.movieList = movieOfTag.data.list;
@@ -95,9 +99,14 @@
       },
       async pageChange(val) {
         this.currentPage = val;
+        this.loading = true;
+        scrollTo(0, 0);
         var movieList = await getByTag(this.tagParam, val, 12);
-        this.movieList = movieList.list;
-        this.total = movieList.total;
+        this.loading = false;
+        if (movieList.code == 0) {
+          this.movieList = movieList.data.list;
+          this.total = movieList.data.total;
+        }
       },
     }
   }
