@@ -11,7 +11,7 @@ export function sleep(duration) {
 export async function getRecommends(userId) {
   console.log("getRecoomend")
   var token = localStorage.getItem("token")
-  var resp = await axios.get(`/api/suggest/${userId}`, {
+  var resp = await axios.get(`/api/people/${userId}/suggest`, {
     headers: {
       token: token
     }
@@ -103,6 +103,6 @@ export async function getMovie(movieId) {
 }
 
 export async function getMovieRecommend(movieId) {
-  var resp = await axios.get(`/api/movie/rec/${movieId}`);
+  var resp = await axios.get(`/api/movie/${movieId}/suggest`);
   return resp.data;
 }
