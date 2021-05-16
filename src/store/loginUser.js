@@ -16,9 +16,10 @@ export default {
       var resp = await login(payload); // {code:0, msg:"", data:xxx}
       if (resp.code === 0) {
         // 登录成功
+        console.log("lalalal!!!")
+        console.log(resp)
         context.commit("setData", resp.data);
       }
-      console.log(resp)
       return resp;
     },
     async whoAmI(context) {

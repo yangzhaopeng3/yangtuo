@@ -36,7 +36,26 @@ export default {
     {
       path: '/mine',
       name: 'Mine',
+      meta: {
+        requireAuth: true,
+      },
       component: () => import("../views/Mine")
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      meta: {
+        requireAuth: true,
+      },
+      component: () => import("../views/Profile")
+    },
+    {
+      path: '/taste',
+      name: 'Taste',
+      meta: {
+        requireAuth: true,
+      },
+      component: () => import("../views/Taste")
     },
     {
       path: "*",

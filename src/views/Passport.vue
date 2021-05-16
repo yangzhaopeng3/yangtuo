@@ -129,7 +129,7 @@ export default {
       }
     };
     var validateNickname = (rule, value, callback) => {
-      let pattern = /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{4,15}$/;
+      let pattern = /^(?!_)(?!.*?_$)[a-zA-Z0-9_\s\u4e00-\u9fa5]{4,15}$/;
       if (value === '') {
         callback(new Error('请输入昵称'));
       } else if (value.length < 4 || value.length > 10) {
@@ -231,7 +231,7 @@ export default {
           //await reg(userInfo);
           var resp = await reg(userInfo);
           if (resp.code == 0) {
-            await this.sleep(1000);
+            await this.sleep(300);
             this.loading_reg = false;
             this.regMessage.type = 'success';
           } else {
@@ -263,13 +263,18 @@ export default {
             loginUser
           );
           if (result.code == 0) {
-            await this.sleep(1000);
+            await this.sleep(300);
             this.loading_login = false;
             this.loginMessage.visible = true;
             this.loginMessage.type = 'success';
             this.loginMessage.msg = result.msg;
-            await this.sleep(1000);
-            this.$router.push({name: "Home"});
+            await this.sleep(300);
+            if (this.$route.query.redirect) {
+              let redirect = this.$route.query.redirect;
+              this.$router.push(redirect)
+            } else {
+              this.$router.push({name: "Home"});
+            }
           } else {
             this.loginMessage.type = "error";
             this.loginMessage.msg = result.msg;

@@ -1,6 +1,10 @@
 <template>
-  <div id="app" v-loading.fullscreen.lock="loading">
-    <MovieList :movie-list="movieList"></MovieList>
+  <div id="app">
+    <MovieList v-loading="loading"
+               :movie-list="movieList"
+               element-loading-background="rgba(0, 0, 0, 0.8)"
+               element-loading-spinner="el-icon-loading"
+               element-loading-text="📽️🏃🏃‍♂️🏃‍♀️"></MovieList>
     <el-pagination
       style="margin-top: 20px;text-align: center"
       :page-size="10"
@@ -12,7 +16,6 @@
     </el-pagination>
   </div>
 </template>
-m
 <script>
 import MovieList from "../components/MovieList";
 import {getMovieList} from "../services/movieService";

@@ -14,7 +14,6 @@ store.dispatch("loginUser/whoAmI")
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -24,3 +23,4 @@ new Vue({
   template: '<App/>',
   render: h => h(App)
 })
+

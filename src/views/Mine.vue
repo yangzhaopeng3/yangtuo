@@ -54,9 +54,12 @@
         <div v-if="recTotal==0&&loading==false">
           你标记的电影数量太少，我们还猜不透你呢！<br>快去
           <router-link :to="{name:'Chart'}">标记更多的电影</router-link>
+          /
+          <router-link :to="{name:'Taste'}">设置你的偏好</router-link>
           ，让我们知道你的口味吧！
         </div>
-        <MovieList :is-small="true" :movie-list="recommendList" v-loading="loading"></MovieList>
+        <MovieList v-loading="loading" :is-small="true" :movie-list="recommendList"
+                   element-loading-spinner="el-icon-loading"></MovieList>
       </div>
     </div>
 
@@ -95,6 +98,7 @@ export default {
     }
   },
   async created() {
+    console.log(this.loginUser)
     var resp1 = await getWatchedList(this.loginUser.userId);
     if (resp1.code == 0) {
       this.watch.watchedList = resp1.data.list;
@@ -108,7 +112,6 @@ export default {
     this.loading = true;
     var resp3 = await getRecommends(this.loginUser.userId);
     if (resp3.code == 0) {
-      console.log(resp3);
       this.recTotal = resp3.data.length;
       this.recommendList = resp3.data;
     }

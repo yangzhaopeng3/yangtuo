@@ -30,15 +30,19 @@
           <template v-if="loginUser">
             <el-dropdown trigger="click">
       <span class="el-dropdown-link">
-        {{loginUser.nickname}}的账号<i class="el-icon-arrow-down el-icon--right"></i>
+        {{ loginUser.nickname }}的账号<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <router-link :to="{name:'Mine'}">个人主页</router-link>
+                  <router-link :to="{name:'Profile'}">个人资料</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link :to="{name:'Taste'}">偏好设置</router-link>
                 </el-dropdown-item>
                 <el-dropdown-item>
                   <a href="" @click.prevent="handleLoginOut">退出</a>
                 </el-dropdown-item>
+
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -52,132 +56,132 @@
 </template>
 
 <script>
-  import {mapState} from "vuex";
+import {mapState} from "vuex";
 
-  export default {
-    data() {
-      return {
-        content: '',
-        headerList: [
-          {
-            name: '分类',
-            url: 'Tag'
-          },
-          {
-            name: '排行榜',
-            url: 'Chart'
-          },
-        ]
+export default {
+  data() {
+    return {
+      content: '',
+      headerList: [
+        {
+          name: '分类',
+          url: 'Tag'
+        },
+        {
+          name: '排行榜',
+          url: 'Chart'
+        },
+      ]
+    }
+  },
+  computed: {
+    ...mapState("loginUser", {
+      loginUser: "data",
+    }),
+  },
+  methods: {
+    searchSTH() {
+      if (this.content == '') {
+        return;
       }
-    },
-    computed: {
-      ...mapState("loginUser", {
-        loginUser: "data",
-      }),
-    },
-    methods: {
-      searchSTH() {
-        if (this.content == '') {
-          return;
+      this.$router.push({
+        name: "Search",
+        params: {
+          content: this.content,
         }
-        this.$router.push({
-          name: "Search",
-          params: {
-            content: this.content,
-          }
-        })
-        this.content = ''
-      },
-      handleLoginOut() {
-        this.$store.dispatch("loginUser/loginOut");
-        this.$router.push({name: "Passport"});
-      },
+      })
+      this.content = ''
     },
-  };
+    handleLoginOut() {
+      this.$store.dispatch("loginUser/loginOut");
+      this.$router.push({name: "Passport"});
+    },
+  },
+};
 </script>
 
 <style scoped>
-  .header {
-    height: 60px;
-  }
+.header {
+  height: 60px;
+}
 
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-  }
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409EFF;
+}
 
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
+.el-icon-arrow-down {
+  font-size: 12px;
+}
 
-  .demonstration {
-    display: block;
-    color: #8492a6;
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
+.demonstration {
+  display: block;
+  color: #8492a6;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
 
-  .header-container {
-    height: 60px;
-    background-color: rgba(240, 243, 245, 0.88);
-    line-height: 60px;
-    position: fixed;
-    z-index: 100;
-    left: 0;
-    top: 0;
-    width: 100%;
-    display: flex;
-  }
+.header-container {
+  height: 60px;
+  background-color: rgba(240, 243, 245, 0.88);
+  line-height: 60px;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  display: flex;
+}
 
-  .container {
-    width: 100%;
-    display: flex;
-  }
+.container {
+  width: 100%;
+  display: flex;
+}
 
-  .logo a {
-    display: flex;
-    margin-left: 110px;
-    align-items: center;
-    height: 100%;
-  }
+.logo a {
+  display: flex;
+  margin-left: 110px;
+  align-items: center;
+  height: 100%;
+}
 
-  .nav {
-    margin: 0 60px;
-    display: flex;
-    flex-grow: 1;
-  }
+.nav {
+  margin: 0 60px;
+  display: flex;
+  flex-grow: 1;
+}
 
-  .nav a {
-    display: block;
-    padding: 0 30px;
-  }
+.nav a {
+  display: block;
+  padding: 0 30px;
+}
 
-  .nav .router-link-exact-active {
-    color: #fcb85f;
-  }
+.nav .router-link-exact-active {
+  color: #fcb85f;
+}
 
-  .user {
-    float: right;
-    font-size: 14px;
-    margin-right: 30px;
-  }
+.user {
+  float: right;
+  font-size: 14px;
+  margin-right: 30px;
+}
 
-  .user * {
-    margin-left: 10px;
-  }
+.user * {
+  margin-left: 10px;
+}
 
-  .header a {
-    color: #757575;
-  }
+.header a {
+  color: #757575;
+}
 
-  .router-link-active {
-    color: #258dcd !important;
-  }
+.router-link-active {
+  color: #258dcd !important;
+}
 
-  .title {
-    color: #258dcd !important;
-    font-size: 30px;
-    font-weight: bold;
-    line-height: 75px;
-  }
+.title {
+  color: #258dcd !important;
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 75px;
+}
 </style>

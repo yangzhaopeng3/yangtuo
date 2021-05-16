@@ -1,6 +1,10 @@
 <template>
-  <div style="margin-top: -20px">
-    <MovieListVertical :charts="charts" v-loading="loading"></MovieListVertical>
+  <div v-loading="loading"
+       element-loading-spinner="el-icon-loading"
+       element-loading-text="排行榜正在拼命加载中..."
+       style="margin-top: 20px"
+  >
+    <MovieListVertical :charts="charts"></MovieListVertical>
     <el-pagination
       style="margin-top: 20px;text-align: center"
       :page-size="10"
@@ -14,44 +18,44 @@
 </template>
 
 <script>
-  import {getChart} from "../services/movieService";
-  import MovieListVertical from "../components/MovieListVertical";
+import {getChart} from "../services/movieService";
+import MovieListVertical from "../components/MovieListVertical";
 
-  export default {
-    name: "Top",
-    components: {
-      MovieListVertical
-    },
-    data() {
-      return {
-        loading: false,
-        charts: [],
-        currentPage: 1,
-        total: 0
-      }
-    },
-    async created() {
+export default {
+  name: "Top",
+  components: {
+    MovieListVertical
+  },
+  data() {
+    return {
+      loading: false,
+      charts: [],
+      currentPage: 1,
+      total: 0
+    }
+  },
+  async created() {
+    this.loading = true;
+    var resp = await getChart(1, 12);
+    this.loading = false;
+    if (resp.code == 0) {
+      this.charts = resp.data.list;
+      this.total = 250;
+    }
+  },
+  methods: {
+    async pageChange(val) {
       this.loading = true;
-      var resp = await getChart(1, 12);
+      this.currentPage = val;
+      scrollTo(0, 0);
+      var charts = await getChart(this.currentPage, 12);
       this.loading = false;
-      if (resp.code == 0) {
-        this.charts = resp.data.list;
-        this.total = 250;
-      }
-    },
-    methods: {
-      async pageChange(val) {
-        this.loading = true;
-        this.currentPage = val;
-        scrollTo(0, 0);
-        var charts = await getChart(this.currentPage, 12);
-        this.loading = false;
-        if (charts.code == 0) {
-          this.charts = charts.data.list;
-        }
+      if (charts.code == 0) {
+        this.charts = charts.data.list;
       }
     }
   }
+}
 </script>
 
 <style scoped>

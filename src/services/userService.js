@@ -36,3 +36,9 @@ export async function reg(userInfo) {
   var resp = await axios.post("/api/register", userInfo);
   return resp.data;
 }
+
+
+export async function updateProfile(userInfo) {
+  var resp = await axios.post("/api/profile", userInfo);
+  return resp.data;
+}

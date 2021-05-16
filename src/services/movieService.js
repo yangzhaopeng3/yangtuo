@@ -9,14 +9,13 @@ export function sleep(duration) {
 }
 
 export async function getRecommends(userId) {
-  console.log("getRecoomend")
+
   var token = localStorage.getItem("token")
   var resp = await axios.get(`/api/people/${userId}/suggest`, {
     headers: {
       token: token
     }
   });
-  console.log(resp);
   return resp.data;
 }
 
